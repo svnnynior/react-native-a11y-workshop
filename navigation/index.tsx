@@ -16,7 +16,7 @@ import { ColorSchemeName, Pressable } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import ModalScreen from "../screens/ModalScreen";
+import TodoScreen from "../screens/TodoScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import TodoListScreen from "../screens/TodoListScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
@@ -62,7 +62,7 @@ function RootNavigator() {
         options={{ title: "Oops!" }}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="Todo" component={TodoScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -88,13 +88,13 @@ function BottomTabNavigator() {
         name="TodoList"
         component={TodoListScreen}
         options={({ navigation }: RootTabScreenProps<"TodoList">) => ({
-          title: "To-do",
+          title: "Your Todo List",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="check-square-o" color={color} />
           ),
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate("Modal")}
+              onPress={() => navigation.navigate("NotFound")}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}

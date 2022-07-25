@@ -1,11 +1,12 @@
-import Checkbox from "expo-checkbox";
-import { StyleSheet } from "react-native";
-import useColorScheme from "../hooks/useColorScheme";
-import { Todo, TodoCategory } from "../screens/TodoListScreen";
-import { Text, View } from "./Themed";
-import Colors from "../constants/Colors";
 import { Entypo } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import Checkbox from "expo-checkbox";
+import { StyleSheet, Touchable, TouchableWithoutFeedback } from "react-native";
+import Colors from "../constants/Colors";
+import useColorScheme from "../hooks/useColorScheme";
+import { Todo, TodoCategory, TodoLevel } from "../types/Todo.types";
 import Tag, { TagTheme } from "./Tag";
+import { Text, View } from "./Themed";
 
 function tagThemeFromCategory(category: TodoCategory): TagTheme {
   switch (category) {
@@ -23,36 +24,53 @@ function tagThemeFromCategory(category: TodoCategory): TagTheme {
 }
 
 export function TodoCard({
-  todo: { label, description, location, category, isDone },
+  todo,
+  onToggleTodo,
 }: {
   todo: Todo;
+  onToggleTodo: (todo: Todo) => void;
 }) {
   const colorScheme = useColorScheme();
+  const navigation = useNavigation();
+
+  const goToTodo = () => {
+    navigation.navigate("Todo", {
+      todo,
+    });
+  };
+
+  const { label, description, location, category, isDone } = todo;
 
   return (
-    <View
-      lightColor="#ffffff"
-      darkColor="#191919"
-      style={[styles.card, styles.cardShadow, styles.fixHeight]}
-    >
-      <View darkColor="#191919">
-        <View darkColor="#191919" style={styles.rowContainer}>
-          <Checkbox style={styles.checkbox} value={isDone} />
-          <Text style={styles.label}>{label}</Text>
+    <TouchableWithoutFeedback onPress={goToTodo}>
+      <View
+        lightColor="#ffffff"
+        darkColor="#191919"
+        style={[styles.card, styles.cardShadow, styles.fixHeight]}
+      >
+        <View darkColor="#191919">
+          <View darkColor="#191919" style={styles.rowContainer}>
+            <Checkbox
+              style={styles.checkbox}
+              value={isDone}
+              onValueChange={() => onToggleTodo(todo)}
+            />
+            <Text style={styles.label}>{label}</Text>
+          </View>
+          <Text style={styles.description}>{description}</Text>
+          <Tag label={category} theme={tagThemeFromCategory(category)} />
         </View>
-        <Text style={styles.description}>{description}</Text>
-        <Tag label={category} theme={tagThemeFromCategory(category)} />
+        <View darkColor="#191919" style={[styles.rowContainer]}>
+          <Entypo
+            name="location-pin"
+            size={18}
+            color={Colors[colorScheme].text}
+            style={{ marginRight: 8 }}
+          />
+          <Text style={styles.location}>{location}</Text>
+        </View>
       </View>
-      <View darkColor="#191919" style={[styles.rowContainer]}>
-        <Entypo
-          name="location-pin"
-          size={18}
-          color={Colors[colorScheme].text}
-          style={{ marginRight: 8 }}
-        />
-        <Text style={styles.location}>{location}</Text>
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -94,7 +112,6 @@ const styles = StyleSheet.create({
     color: "grey",
   },
   location: {
-    // fontStyle: "italic",
     fontWeight: "400",
   },
   selfBottom: {

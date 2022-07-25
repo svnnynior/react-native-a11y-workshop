@@ -1,30 +1,9 @@
-import { FlatList, StyleSheet, TouchableHighlight } from "react-native";
+import { useCallback, useState } from "react";
+import { FlatList, StyleSheet } from "react-native";
 import { TodoCard } from "../components/TodoCard";
 
 import { RootTabScreenProps } from "../types";
-
-export enum TodoCategory {
-  Work = "Work",
-  Family = "Family",
-  Personal = "Personal",
-  Miscellaneous = "Miscellaneous",
-}
-
-export enum TodoLevel {
-  Important = "important",
-  SoSo = "so so",
-  Whatever = "whatever",
-}
-
-export type Todo = {
-  id: string;
-  importance: TodoLevel;
-  category: TodoCategory;
-  label: string;
-  description: string;
-  location: string;
-  isDone: boolean;
-};
+import { Todo, TodoCategory, TodoLevel } from "../types/Todo.types";
 
 const TODO_LIST: Todo[] = [
   {
@@ -66,14 +45,27 @@ const TODO_LIST: Todo[] = [
   },
 ];
 
+const updateTodoList = (list: Todo[], item: Todo): Todo[] => {
+  return list.map((todo) => {
+    return todo.id === item.id ? { ...item, isDone: !item.isDone } : todo;
+  });
+};
+
 export default function TodoListScreen({
   navigation,
 }: RootTabScreenProps<"TodoList">) {
+  const [todos, setTodos] = useState(TODO_LIST);
+  const handleChange = useCallback(
+    (todo) => setTodos((currentTodos) => updateTodoList(currentTodos, todo)),
+    []
+  );
   return (
     <FlatList
       style={styles.container}
-      data={TODO_LIST}
-      renderItem={({ item }) => <TodoCard todo={item} />}
+      data={todos}
+      renderItem={({ item }) => (
+        <TodoCard todo={item} onToggleTodo={handleChange} />
+      )}
     />
   );
 }
@@ -81,7 +73,6 @@ export default function TodoListScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "white",
   },
   title: {
     fontSize: 20,

@@ -9,6 +9,7 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Todo } from "./types/Todo.types";
 
 declare global {
   namespace ReactNavigation {
@@ -18,7 +19,9 @@ declare global {
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
-  Modal: undefined;
+  Todo: {
+    todo: Todo | null;
+  };
   NotFound: undefined;
 };
 
