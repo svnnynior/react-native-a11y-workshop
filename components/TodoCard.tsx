@@ -46,7 +46,15 @@ export function TodoCard({
       <View
         lightColor="#ffffff"
         darkColor="#191919"
-        style={[styles.card, styles.cardShadow, styles.fixHeight]}
+        style={[
+          styles.card,
+          styles.cardShadow,
+          styles.fixHeight,
+          todo.importance === TodoLevel.Important
+            ? styles.cardImportant
+            : undefined,
+          todo.importance === TodoLevel.SoSo ? styles.cardSoSo : undefined,
+        ]}
       >
         <View darkColor="#191919">
           <View darkColor="#191919" style={styles.rowContainer}>
@@ -91,6 +99,14 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 4,
     shadowOpacity: 0.2,
+  },
+  cardImportant: {
+    borderLeftColor: "#eb4034",
+    borderLeftWidth: 4,
+  },
+  cardSoSo: {
+    borderLeftColor: "#eba234",
+    borderLeftWidth: 4,
   },
   fixHeight: {
     height: 160,
