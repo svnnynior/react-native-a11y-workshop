@@ -46,6 +46,7 @@ export function TodoCard({
       : importance === TodoLevel.SoSo
       ? "So so"
       : "Whatever";
+  const statusAccessibilityLabel = isDone ? "Finished." : "Unfinished.";
 
   return (
     <TouchableWithoutFeedback onPress={goToTodo}>
@@ -68,6 +69,11 @@ export function TodoCard({
               style={styles.checkbox}
               value={isDone}
               onValueChange={() => onToggleTodo(todo)}
+              accessibilityLabel={statusAccessibilityLabel}
+              accessibilityRole="checkbox"
+              accessibilityState={{
+                checked: isDone,
+              }}
             />
             <Text
               style={styles.label}
