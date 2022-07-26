@@ -72,7 +72,7 @@ export function TodoCard({
       accessibilityHint={
         Platform.OS === "ios"
           ? "Double tap to toggle todo. Double tap with two fingers to see more detail."
-          : "Double tap to toggle todo. Long press to see more detail."
+          : undefined
       }
     >
       <View
@@ -99,6 +99,7 @@ export function TodoCard({
               accessibilityState={{
                 checked: isDone,
               }}
+              importantForAccessibility="no"
             />
             <Text
               style={styles.label}
