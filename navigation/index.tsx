@@ -94,6 +94,9 @@ function BottomTabNavigator() {
           ),
           headerRight: () => (
             <Pressable
+              accessibilityRole="imagebutton"
+              accessibilityLabel="More info"
+              accessibilityHint="Double tap for more info."
               onPress={() => navigation.navigate("NotFound")}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
