@@ -63,8 +63,12 @@ export default function TodoListScreen({
     <FlatList
       style={styles.container}
       data={todos}
-      renderItem={({ item }) => (
-        <TodoCard todo={item} onToggleTodo={handleChange} />
+      renderItem={({ item, index }) => (
+        <TodoCard
+          todo={item}
+          onToggleTodo={handleChange}
+          accessibilityIndex={`Item ${index + 1} out of ${todos.length}.`}
+        />
       )}
     />
   );

@@ -1,12 +1,7 @@
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Checkbox from "expo-checkbox";
-import {
-  Platform,
-  StyleSheet,
-  Touchable,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { Platform, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import { Todo, TodoCategory, TodoLevel } from "../types/Todo.types";
@@ -29,11 +24,13 @@ function tagThemeFromCategory(category: TodoCategory): TagTheme {
 }
 
 export function TodoCard({
+  accessibilityIndex,
   todo,
   onToggleTodo,
 }: {
   todo: Todo;
   onToggleTodo: (todo: Todo) => void;
+  accessibilityIndex?: string;
 }) {
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
@@ -51,7 +48,7 @@ export function TodoCard({
       : importance === TodoLevel.SoSo
       ? "So so"
       : "Whatever";
-  const statusAccessibilityLabel = isDone ? "Finished." : "Unfinished.";
+  const statusAccessibilityLabel = isDone ? "Finished" : "Unfinished";
 
   return (
     <TouchableWithoutFeedback
@@ -105,7 +102,9 @@ export function TodoCard({
             />
             <Text
               style={styles.label}
-              accessibilityLabel={`${importanceAccessibilityLabel} todo: ${label}.`}
+              accessibilityLabel={`todo: ${label}. ${
+                accessibilityIndex || ""
+              } Importance level: ${importance}.`}
             >
               {label}
             </Text>
