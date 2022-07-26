@@ -49,7 +49,25 @@ export function TodoCard({
   const statusAccessibilityLabel = isDone ? "Finished." : "Unfinished.";
 
   return (
-    <TouchableWithoutFeedback onPress={goToTodo}>
+    <TouchableWithoutFeedback
+      onPress={goToTodo}
+      accessibilityActions={[
+        { name: "activate", label: "toggle todo" },
+        { name: "magicTap", label: "see more detail" }, // iOS only
+        { name: "longpress", label: "see more detail" }, // Android only
+      ]}
+      onAccessibilityAction={(event) => {
+        switch (event.nativeEvent.actionName) {
+          case "activate":
+            onToggleTodo(todo);
+            break;
+          case "magicTap":
+          case "longpress":
+            goToTodo();
+            break;
+        }
+      }}
+    >
       <View
         lightColor="#ffffff"
         darkColor="#191919"
