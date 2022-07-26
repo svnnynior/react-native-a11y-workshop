@@ -1,7 +1,12 @@
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Checkbox from "expo-checkbox";
-import { StyleSheet, Touchable, TouchableWithoutFeedback } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  Touchable,
+  TouchableWithoutFeedback,
+} from "react-native";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import { Todo, TodoCategory, TodoLevel } from "../types/Todo.types";
@@ -67,6 +72,11 @@ export function TodoCard({
             break;
         }
       }}
+      accessibilityHint={
+        Platform.OS === "ios"
+          ? "Double tap to toggle todo. Double tap with two fingers to see more detail."
+          : "Double tap to toggle todo. Long press to see more detail."
+      }
     >
       <View
         lightColor="#ffffff"
