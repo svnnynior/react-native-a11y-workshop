@@ -39,7 +39,13 @@ export function TodoCard({
     });
   };
 
-  const { label, description, location, category, isDone } = todo;
+  const { label, description, location, category, importance, isDone } = todo;
+  const importanceAccessibilityLabel =
+    importance === TodoLevel.Important
+      ? "Important"
+      : importance === TodoLevel.SoSo
+      ? "So so"
+      : "Whatever";
 
   return (
     <TouchableWithoutFeedback onPress={goToTodo}>
@@ -63,12 +69,30 @@ export function TodoCard({
               value={isDone}
               onValueChange={() => onToggleTodo(todo)}
             />
-            <Text style={styles.label}>{label}</Text>
+            <Text
+              style={styles.label}
+              accessibilityLabel={`${importanceAccessibilityLabel} todo: ${label}.`}
+            >
+              {label}
+            </Text>
           </View>
-          <Text style={styles.description}>{description}</Text>
-          <Tag label={category} theme={tagThemeFromCategory(category)} />
+          <Text
+            style={styles.description}
+            accessibilityLabel={`Description: ${description}.`}
+          >
+            {description}
+          </Text>
+          <Tag
+            label={category}
+            theme={tagThemeFromCategory(category)}
+            accessibilityLabel={`Category: ${category}.`}
+          />
         </View>
-        <View darkColor="#191919" style={[styles.rowContainer]}>
+        <View
+          darkColor="#191919"
+          style={[styles.rowContainer]}
+          accessibilityLabel={`Location: ${location}.`}
+        >
           <Entypo
             name="location-pin"
             size={18}

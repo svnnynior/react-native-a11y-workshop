@@ -22,13 +22,17 @@ export enum TagTheme {
 export default function Tag({
   theme,
   label,
+  accessibilityLabel,
 }: {
   theme: TagTheme;
   label: string;
+  accessibilityLabel?: string;
 }) {
   return (
     <View style={[styles.tag, styles[theme]]}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={styles.label} accessibilityLabel={accessibilityLabel}>
+        {label}
+      </Text>
     </View>
   );
 }
